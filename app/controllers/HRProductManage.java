@@ -4,26 +4,34 @@ package controllers;
 import models.Product;
 import models.SalesMen;
 import play.data.Form;
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import util.AppConst;
 import views.html.setInventory.*;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class HRProductManage extends Controller {
 
-    final static Form<Product> ProductForm = Form.form(Product.class);
-    static Form<SalesMen> salesManForm = Form.form(SalesMen.class);
+    private final FormFactory formFactory;
+
+    @Inject
+    public HRProductManage(final FormFactory formFactory) {
+        this.formFactory = formFactory;
+    }
 
 
     /*salesMan CRUD Start */
 
     public Result createSalesMan() {
+        Form<SalesMen> salesManForm = formFactory.form(SalesMen.class);
         return ok(insertSalesMan.render(salesManForm));
     }
 
     public Result saveSalesMan() {
+        Form<SalesMen> salesManForm = formFactory.form(SalesMen.class);
         Form<SalesMen> filledForm = salesManForm.bindFromRequest();
         SalesMen salesMan = filledForm.get();
 
@@ -51,6 +59,7 @@ public class HRProductManage extends Controller {
     }
 
     public Result salesManEdit(Long id) {
+        Form<SalesMen> salesManForm = formFactory.form(SalesMen.class);
         SalesMen s = SalesMen.findById(id);
 
         if (s == null) {
@@ -63,6 +72,7 @@ public class HRProductManage extends Controller {
 
 
     public Result salesManupdate() {
+        Form<SalesMen> salesManForm = formFactory.form(SalesMen.class);
         Form<SalesMen> filledForm = salesManForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             return badRequest(salesManEdit.render(filledForm));
@@ -94,10 +104,13 @@ public class HRProductManage extends Controller {
     /* CRUD SalesMan END */
 
     public Result create() {
+
+        final Form<Product> ProductForm = formFactory.form(Product.class);
         return ok(create.render(ProductForm));
     }
 
     public Result save() {
+        final Form<Product> ProductForm = formFactory.form(Product.class);
         Form<Product> filledForm = ProductForm.bindFromRequest();
         Product product = filledForm.get();
 
@@ -125,6 +138,7 @@ public class HRProductManage extends Controller {
     }
 
     public Result edit(Long id) {
+        final Form<Product> ProductForm = formFactory.form(Product.class);
         Product prod = Product.findById(id);
 
         if (prod == null) {
@@ -137,6 +151,7 @@ public class HRProductManage extends Controller {
 
 
     public Result update() {
+        final Form<Product> ProductForm = formFactory.form(Product.class);
         Form<Product> filledForm = ProductForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             return badRequest(edit.render(filledForm));

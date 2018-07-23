@@ -22,17 +22,17 @@ public class PushData extends Controller {
 
     public Result xlsupload() {
         MultipartFormData body = request().body().asMultipartFormData();
-        FilePart uploaded_file = body.getFile("uploaded_file");
+        FilePart uploadedFile = body.getFile("uploaded_file");
 
         //if (uploaded_file == null || !uploaded_file.getContentType().equals("application/vnd.ms-excel")) {
         String fileName = "";
 
-        if (uploaded_file == null) {
+        if (uploadedFile == null) {
             flash("FLASH_ERROR_UPLOAD", "Sorry, there was some problem. Please try again after some time");
             return redirect(routes.PushData.uploadPage());
 
         } else {
-            String filename = uploaded_file.getFilename();
+            String filename = uploadedFile.getFilename();
             String extension = filename.substring(filename.lastIndexOf(".") + 1, filename.length());
 
             String excel = "xlsx";
@@ -41,8 +41,8 @@ public class PushData extends Controller {
                 return redirect(routes.PushData.uploadPage());
             }
 
-            File fileXls = uploaded_file.getFile();
-            String fileNameXls = uploaded_file.getFilename();
+            File fileXls = (File) uploadedFile.getFile();
+            String fileNameXls = uploadedFile.getFilename();
             String path = AppConst.EXCEL_UPLOAD_DIR + fileNameXls;
 
             ArrayList<ArrayList<String>> spContents = new ParseSpreadsheet().getDataFromSpreadsheet(fileXls);
