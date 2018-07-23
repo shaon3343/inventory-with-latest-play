@@ -9,6 +9,7 @@ scalaVersion := "2.12.4"
 
 libraryDependencies ++= Seq(
   "org.apache.poi" % "poi" % "3.10-FINAL",
+  "org.apache.poi" % "poi-ooxml" % "3.9",
   "dom4j" % "dom4j" % "1.6.1",
   "org.apache.xmlbeans" % "xmlbeans" % "2.3.0",
   guice,
